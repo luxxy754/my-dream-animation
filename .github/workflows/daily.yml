@@ -1,4 +1,4 @@
-name: Daily Funny Animation
+name: Daily Explainer Short
 
 on:
   schedule:
@@ -27,10 +27,8 @@ env:
   # Har run is se zyada se zyada itne minute baad post karega (random minutes + seconds).
   # Private repo ho to free minutes bachane ke liye ise kam kar dein (e.g. 90).
   MAX_DELAY_MIN: "240"
-  # Long video ki script lambai (words): 1300 = ~8-9 min, 1500 = ~10 min.
-  LONG_TARGET_WORDS: "1300"
-  # Kahani ki zabaan: en (English) | hi (Hindi, Devanagari) | ur (Urdu)  [hi/ur abhi test nahi hue]
-  STORY_LANG: "en"
+  # Long video ki script lambai (words): 1500 = ~9 min, 1700 = ~10 min.
+  LONG_TARGET_WORDS: "1500"
   # cron par hamesha both; manual run par jo option chuna wo.
   MODE: ${{ inputs.mode || 'both' }}
   DO_UPLOAD: ${{ (github.event_name == 'workflow_dispatch' && inputs.upload == false) && 'false' || 'true' }}
@@ -56,9 +54,7 @@ jobs:
           cache: pip
 
       - name: Install system packages
-        run: |
-          sudo apt-get update && sudo apt-get install -y ffmpeg espeak-ng fonts-dejavu-core
-          if [ "$STORY_LANG" != "en" ]; then sudo apt-get install -y fonts-noto-core; fi
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg espeak-ng fonts-dejavu-core
 
       - name: Install dependencies
         run: |
@@ -76,11 +72,14 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python script_gen.py
 
-      - name: Render video (characters/ ki images + code-drawn backgrounds + voices + music)
+      - name: Render video (code-drawn stick-man animation + Kokoro voice + music)
+        timeout-minutes: 12
         env:
           # Koi image API nahi. Music code se banta hai (MUSIC_MODE=download karne par Kevin MacLeod CC-BY track utarta hai)
           MUSIC_MODE: synth
-        run: python render.py
+        run: |
+          fc-cache -f
+          python render.py
 
       - name: Upload to YouTube
         if: env.DO_UPLOAD == 'true'
