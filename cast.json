@@ -1,0 +1,17 @@
+{
+  "narrator": "Shazy",
+  "characters": [
+    {
+      "name": "Shazy",
+      "role": "narrator and main character, introduces himself, his friends and the story at the start of every video",
+      "age": 16,
+      "gender": "male",
+      "height_cm": 173,
+      "personality": "Laid-back teen coder and skateboarder. Dislikes formal attire. Dry humour, overthinks small problems, loves tech and skating.",
+      "speech_style": "casual, quick, funny, talks to the viewer like a friend ('guys', 'so basically')",
+      "voice": "kokoro:am_adam",
+      "pitch": 0,
+      "color": "#FFD23F"
+    }
+  ]
+}
